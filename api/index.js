@@ -1,17 +1,18 @@
 const DEFAULT_MODEL = "gemini-3.5-flash-lite";
-const MAX_HISTORY_MESSAGES = 8;
+const MAX_HISTORY_MESSAGES = 10;
 const MAX_HISTORY_MESSAGE_CHARS = 1200;
 const MAX_ALICE_TEXT = 1024;
-const TOTAL_RESPONSE_BUDGET_MS = 4200; //было 3600
+const TOTAL_RESPONSE_BUDGET_MS = 4400; //было 3600
 const SERPER_TIMEOUT_MS = 2000; //было 600
-const GEMINI_TIMEOUT_MS = 2200; //было 2500
+const GEMINI_TIMEOUT_MS = 2600; //было 2500
 
 const SYSTEM_PROMPT = [
   "Ты — полезный голосовой помощник в навыке Яндекс Алисы.",
-  "Отвечай естественно, по-русски, кратко и так, чтобы ответ было удобно слушать.",
-  "Обычно используй 1–3 коротких предложения. Не используй Markdown, таблицы, списки с символами или длинные вступления.",
-  "Если вопрос требует актуальных данных и переданы результаты поиска, опирайся на них; не выдумывай отсутствующие факты.",
-  "Если не знаешь ответа, честно скажи об этом."
+"Отвечай естественно, по-русски, так, чтобы ответ было удобно слушать.",
+"Обычно используй 2–4 предложения. Если вопрос сложный или просит объяснить — можешь дать более развёрнутый ответ, но без длинных вступлений.",
+"Не используй Markdown, таблицы, списки с символами или длинные вступления.",
+"Если вопрос требует актуальных данных и переданы результаты поиска, опирайся на них; не выдумывай отсутствующие факты.",
+"Если не знаешь ответа, честно скажи об этом."
 ].join(" ");
 
 function aliceResponse(text, endSession = false, history = []) {
@@ -140,8 +141,8 @@ async function askGemini(text, history, searchContext, timeoutMs) {
         systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
         contents,
         generationConfig: {
-          temperature: 0.5,
-          maxOutputTokens: 240
+          temperature: 0.7,
+          maxOutputTokens: 400
         }
       })
     },
